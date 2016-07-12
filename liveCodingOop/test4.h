@@ -1,40 +1,40 @@
 #pragma once
+#pragma once
 
 #include <iostream>
-#include <memory>
+#include <exception>
 
-struct Drawer {
-	virtual void drawPoint(int x, int y) = 0;
-};
-
-class OpenGlDrawer : public Drawer {
-	virtual void drawPoint(int x, int y) override {
-		std::cout << "opengl x=" << x << " y=" << y << std::endl;
-	}
-};
-
-class DirectX : public Drawer {
-	virtual void drawPoint(int x, int y) override {
-		std::cout << "directX x=" << x << " y=" << y << std::endl;
-	}
-};
-
-
-class Rectangle {
-	const std::unique_ptr<Drawer> drawer;
+class Wireless {
 public:
-	Rectangle(Drawer *drawer) : drawer(drawer) {
-		std::cout << "Rectangle" << std::endl;
-	}
+    int wave_;
 
-	void Draw() {
-		std::cout << "draw rectangle" << std::endl;
-		drawer->drawPoint(1, 1);
-	}
+    void virtual switchOn(const int wave) {
+        std::cout << "Wireless wave" << wave;
+    }
+};
+
+class Receiver : public Wireless {
+public:
+    void virtual switchOn(const int wave) override {
+        std::cout << "Receiver wave" << wave;
+    }
+};
+
+class Transmitter : public Wireless {
+public:
+    void virtual switchOn(const int wave) override {
+        std::cout << "Transmitter wave" << wave;
+    }
+};
+
+class Radio : public Receiver, public Transmitter {
+public:
+
+    void virtual switchOn(const int wave) override {
+        std::cout << "Transmitter wave" << wave;
+    }
 };
 
 void test() {
-	std::unique_ptr<Drawer> drawer = std::make_unique<OpenGlDrawer>();
 
-	Rectangle rectangle(drawer.release());
 }
